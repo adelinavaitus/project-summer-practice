@@ -1,0 +1,360 @@
+
+.footer{
+  background-color: #495057;
+  margin:0px auto;
+  padding: 20px 0px 20px 0px;
+  color: white;
+}
+
+address{
+  font-size:80%;
+  margin:0px;
+  color:#0f0f0f;
+  color: white;
+}
+
+.navbar-dark {
+  background-color: #495057;
+}
+
+.home-menu-button{
+  margin-left: 10px;
+}
+
+.menu-button{
+  margin-left: 10px;
+  margin-right: 10px;
+  
+}
+
+.push-menu{
+  margin-left: auto;
+}
+
+
+.card-register{
+  margin-top: 70px;
+  margin-bottom: 70px;
+}
+
+.card-login{
+  margin-top: 150px;
+  margin-bottom: 150px;
+}
+
+.contactus-card{
+  margin-top: 150px;
+  margin-bottom: 150px;
+  font-size: 20px;
+}
+
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+
+.card-student:hover .image {
+  opacity: 0.3;
+}
+
+.card-student:hover .middle {
+  opacity: 1;
+}
+
+
+.card-companie:hover .image {
+  opacity: 0.3;
+}
+
+.card-companie:hover .middle {
+  opacity: 1;
+}
+
+
+.button-register {
+  background-color: #ff6d00;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+
+.button-register:hover{
+  background-color: #ff8500;
+}
+
+.login-link{
+  color: #ff6d00;
+}
+
+.login-link:hover{
+  color: #ff8500;
+}
+
+
+.submit-button{
+  background-color: #ff6d00;
+  border: 0px;
+}
+
+.submit-button:hover{
+  background-color:#495057
+}
+
+.apply-button{
+  background-color: #ff6d00;
+  border: 0px;
+  width: 200px;
+}
+
+.apply-button:hover{
+  background-color:#495057
+}
+
+.read-more-button{
+  background-color: #ff6d00;
+  border: 0px;
+  width: 200px;
+}
+
+.read-more-btn{
+  background-color: #ff6d00;
+  border: 0px;
+}
+
+.ok-button{
+  background-color: #ff6d00;
+  border: 0px;
+  width: 100px;
+}
+
+.read-more-button:hover{
+  background-color:#495057
+}
+
+.img-register{
+  margin-top: 100px;
+}
+
+.img-register-company{
+  margin-top: 180px;
+}
+
+.email-login{
+  margin-top: 30px;
+}
+
+.submit-login{
+  margin-top: 20px;
+}
+
+
+.invalid-credentials, .req{
+  color: #dc3545;
+}
+
+.card-job{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.card-job-detail{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.edit-icon-description{
+  display: none;
+}
+
+.row-myprofile-blocked{
+  background-color: #ebebeb;
+}
+
+.row-myprofile{
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.row-myprofile:hover{
+  background-color: #f0f0f0;
+}
+
+.row-myprofile:hover .edit-icon-description{
+  display: block;
+}
+
+.cv-component:hover{
+  background-color: #f0f0f0;
+
+}
+
+
+.cv-component:hover  .edit-icon-description{
+  display: block;
+}
+
+
+.white-spaces{
+  white-space: pre-line;
+}
+
+
+.close-button{
+  width: 100px;
+  background-color: #495057;
+  border: 0px;
+}
+
+.save-button{
+  width: 100px;
+  background-color: #ff6d00;
+  border: 0px;
+}
+
+.back-button{
+  width: 150px;
+  background-color: #495057;
+  margin-top: 30px;
+
+}
+
+.edit-button{
+  width: 150px;
+  margin-right: 20px;
+  background-color: #ff6d00;
+  border: 0px;
+}
+
+.upload-file-btn{
+  width: 150px;
+  margin-right: 20px;
+  background-color: #ff6d00;
+  border: 0px;
+}
+
+.disable-button, .enable-button{
+  width: 150px;
+  background-color: #495057;
+  border: 0px;
+  margin-right: 20px;
+}
+
+.add-education-btn, .add-experience-btn{
+  height: 60px;
+}
+
+
+.add-education-btn:hover , .add-experience-btn:hover{
+  background-color: #f0f0f0;
+  color:black;
+}
+
+
+
+.myprofile-button{
+  width: 160px;
+  background-color: #ff6d00;
+  border: 0px;
+}
+
+.principalCard{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.card-job-inactive{
+  background-color: rgb(212, 212, 212);
+  opacity: 0.8;
+}
+
+.inactive-jobs{
+  margin-bottom: 20px;
+}
+
+
+
+tr{
+  height: 50px;
+}
+
+.card-body-empty{
+  margin-top: 200px;
+  margin-bottom: 200px;
+}
+
+.select-row{
+  margin-bottom: 20px;
+}
+
+.faculty-filter-div{
+  margin-bottom: 40px;
+}
+
+.reload-doc{
+  margin-top: 30px;
+}
+
+.response-rejected{
+  color:#dc3545;
+  font-size: 16px;
+
+}
+.response-approved{
+  color:rgb(51, 224, 51);
+  font-size: 16px;
+}
+
+.approve-btn{
+  background-color: rgb(51, 224, 51);
+  width: 100px;
+  margin-right: 20px;
+  border: 0px;
+}
+
+.reject-btn{
+  background-color: #dc3545;
+  width: 100px;
+  margin-right: 20px;
+  border: 0px;
+}
+
+.supervisor-response-div{
+  margin-top: 50px;
+  border: solid 1px black;
+}
+
+.not-found-page{
+  margin-top: 200px;
+  margin-bottom: 200px;
+  font-size: 40px;
+  color:#495057
+}
+
+.add-info-div{
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.to-register-button{
+  background-color: #ff6d00;;
+  width: 500px;
+  margin-right: 20px;
+  border: 0px;
+}
