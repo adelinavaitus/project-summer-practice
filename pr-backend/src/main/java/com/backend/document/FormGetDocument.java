@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// This is a DTO (Data Transfer Object) for transferring document data
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -16,46 +16,66 @@ public class DocumentController {
     @Autowired
     private DocumentService documentService;
 
+    // Endpoint to retrieve all documents
     @GetMapping()
     public ResponseEntity<List<Document>> getDocuments(){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(documentService.getAllDocuments());
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(documentService.getAllDocuments());
+
         return responseEntity;
     }
 
+    // Endpoint to retrieve a document by its ID
     @GetMapping("/{id}")
     public ResponseEntity<Document> getDocumentById(@PathVariable Integer id) {
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(documentService.getDocumentById(id));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(documentService.getDocumentById(id));
+
         return responseEntity;
     }
 
+    // Endpoint to insert a new document
     @PostMapping()
     public ResponseEntity<Document> insertDocument(@RequestBody Document document){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(documentService.insertDocument(document));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(documentService.insertDocument(document));
+
         return responseEntity;
     }
 
-
+    // Endpoint to update an existing document
     @PutMapping()
     public ResponseEntity<Document> updateDocument(@RequestBody FormGetDocument formGetDocument){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(documentService.updateDocument(formGetDocument));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(documentService.updateDocument(formGetDocument));
+
         return responseEntity;
     }
 
+    // Endpoint to mark a document as approved
     @PutMapping("/approved")
     public ResponseEntity<Document> updateDocumentApproved(@RequestBody FormGetDocument formGetDocument){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(documentService.updateDocumentApproved(formGetDocument));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(documentService.updateDocumentApproved(formGetDocument));
+
         return responseEntity;
     }
 
+    // Endpoint to mark a document as rejected
     @PutMapping("/rejected")
     public ResponseEntity<Document> updateDocumentARejected(@RequestBody FormGetDocument formGetDocument){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(documentService.updateDocumentRejected(formGetDocument));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(documentService.updateDocumentRejected(formGetDocument));
+
         return responseEntity;
     }
 
+    // Endpoint to delete a document
     @DeleteMapping()
     public ResponseEntity<Document> deleteDocument(@RequestBody Document document){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(documentService.deleteDocumeent(document));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(documentService.deleteDocument(document));
+
         return responseEntity;
     }
 }
