@@ -13,7 +13,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Supervisor {
-
     @Id
     private int id;
 
@@ -26,7 +25,6 @@ public class Supervisor {
     @ManyToOne
     @JoinColumn(name = "faculty_id", nullable = false)
     private Faculty faculty;
-
 
     public Supervisor(String firstName, String lastName, Faculty faculty){
         this.firstName = firstName;

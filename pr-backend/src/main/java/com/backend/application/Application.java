@@ -19,10 +19,12 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    // Specifies a many-to-one relationship between the current entity and the "Student" entity
     @ManyToOne
     @JoinColumn( name = "student_id",  nullable = false, columnDefinition = "int")
     private Student student;
 
+    // Specifies a many-to-one relationship between the current entity and the "Job" entity
     @ManyToOne
     @JoinColumn( name = "job_id",  nullable = false, columnDefinition = "int")
     private Job job;

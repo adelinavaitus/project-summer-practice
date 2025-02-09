@@ -12,7 +12,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Faculty {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -22,5 +21,4 @@ public class Faculty {
 
     @Column( name = "description", columnDefinition = "varchar(4000)", unique = false , nullable = true)
     private String description;
-
 }

@@ -10,11 +10,11 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest {
-
+    // Field for the email address, cannot be blank
     @NotBlank
     private String email;
 
+    // Field for the password, cannot be blank
     @NotBlank
     private String password;
-
 }

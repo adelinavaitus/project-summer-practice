@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+// DTO (Data Transfer Object) for ResumeStudent entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class FormGetResumeStudent {
-
     private int id;
     private int userId;
     private String description;

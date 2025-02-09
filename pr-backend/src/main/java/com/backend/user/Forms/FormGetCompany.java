@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+// This class is a DTO (Data Transfer Object) used for transferring company data between layers or between client and server
 public class FormGetCompany {
-
     public int id;
     public String email;
     public String name;

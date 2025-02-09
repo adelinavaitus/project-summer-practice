@@ -13,13 +13,19 @@ import java.io.IOException;
 
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
-
+    // Logger to log unauthorized access attempts
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
-
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest httpServletRequest,
+                         HttpServletResponse httpServletResponse,
+                         AuthenticationException e)
+            throws IOException, ServletException {
+
+        // Log the error message for unauthorized access
         logger.error("Unauthorized problem:{}",e.getMessage());
+
+        // Send an Unauthorized error response (HTTP 401)
         httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Error: Unauthorized");
     }
 }

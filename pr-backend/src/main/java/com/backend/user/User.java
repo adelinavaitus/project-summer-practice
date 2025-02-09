@@ -11,9 +11,9 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="users")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Data   // Lombok annotation for getters, setters, toString, equals, and hashCode methods
+@NoArgsConstructor  // Lombok annotation for generating the no-args constructor
+@AllArgsConstructor // Lombok annotation for generating the all-args constructor
 public class User {
 
     @Id
@@ -28,10 +28,11 @@ public class User {
     @Size(max=120)
     private String password;
 
-    @ManyToOne
+    @ManyToOne  // Specifies the relationship to the Role entity (many users can have the same role)
     @JoinColumn(name = "role_id", nullable = false)
     public Role role;
 
+    // Constructor that takes email and password as arguments
     public User (String email, String password){
         this.email = email;
         this.password = password;

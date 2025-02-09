@@ -17,7 +17,6 @@ import javax.persistence.*;
 public class Student {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column( name = "firstName", columnDefinition = "varchar(25)", nullable = false)
@@ -48,5 +47,4 @@ public class Student {
         this.phoneNo = phoneNo;
         this.group = group;
     }
-
 }

@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+// DTO (Data Transfer Object) for Education entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class FormGetEducation {
-
     private int id;
     private String yearStart;
     private String yearStop;
