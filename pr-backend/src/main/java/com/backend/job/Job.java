@@ -14,7 +14,6 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Job {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -37,7 +36,4 @@ public class Job {
 
     @Column (name = "available")
     private Boolean available;
-
-
 }
-

@@ -14,82 +14,72 @@ public class JobController {
     @Autowired
     private JobService service;
 
+    // Retrieves all jobs
     @GetMapping("/jobs")
     public ResponseEntity<List<Job>> getAllJobs(){
         ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.getAllJobs());
+
         return responseEntity;
     }
 
+    // Retrieves a job by its ID
     @GetMapping("/jobs/{id}")
     public ResponseEntity<Job> getAllJobsById(@PathVariable Integer id){
         ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.getJobById(id));
+
         return responseEntity;
     }
 
+    // Retrieves jobs by a specific company ID
     @GetMapping("/jobs/companies/{id}")
     public ResponseEntity<List<Job>> getAllJobsByCompanyId(@PathVariable Integer id){
         ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.getByCompanyId(id));
+
         return responseEntity;
     }
 
+    // Updates a job's details
     @PutMapping("/jobs")
     public ResponseEntity<Job> updateJob(@RequestBody FormGetJob formGetJob){
         ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.updateJob(formGetJob));
+
         return responseEntity;
     }
 
+    // Enables a job by its ID (sets 'available' to true)
     @PutMapping("/job-enable")
     public ResponseEntity<Job> enableJobByid(@RequestBody String jobId){
         System.out.println(jobId);
         jobId =jobId.substring(9, jobId.length()-1);
         ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.enableJobById(jobId));
+
         return responseEntity;
     }
 
+    // Disables a job by its ID (sets 'available' to false)
     @PutMapping("/job-disable")
     public ResponseEntity<Job> disableJobById(@RequestBody String jobId){
         System.out.println(jobId);
         jobId =jobId.substring(9, jobId.length()-1);
         ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.disableJobById(jobId));
+
         return responseEntity;
     }
 
-
+    // Inserts a new job
     @PostMapping("/jobs")
     public  ResponseEntity<Job> insertJob(@RequestBody FormGetJob formGetJob){
         ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.insertJob(formGetJob));
+
         return  responseEntity;
     }
 
+    // Deletes a job
     @DeleteMapping("/jobs")
     public ResponseEntity<Job> deleteJob(@RequestBody Job job){
         ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.deleteJob(job));
+
         return responseEntity;
     }
-
-//    @GetMapping("/jobs-available")
-//    public ResponseEntity<List<Job>> getAllAvailableJobs (){
-//        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.getAllAvailableJobs());
-//        return responseEntity;
-//    }
-//
-//    @GetMapping("/jobs-unavailable")
-//    public ResponseEntity<List<Job>> getAllUnavailableJobs (){
-//        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.getAllUnavailableJobs());
-//        return responseEntity;
-//    }
-//
-//    @GetMapping("/jobs-available/{company_id}")
-//    public ResponseEntity<List<Job>> getAllAvailableJobsByCompanyId(@PathVariable Integer company_id){
-//        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.getAllAvailableJobsByCompanyId(company_id));
-//        return responseEntity;
-//    }
-//
-//    @GetMapping("/jobs-unavailable/{company_id}")
-//    public ResponseEntity<List<Job>> getAllUnavailableJobsByCompanyId(@PathVariable Integer company_id){
-//        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.getAllUnavailableJobsByCompanyId(company_id));
-//        return responseEntity;
-//    }
-
 }
 
