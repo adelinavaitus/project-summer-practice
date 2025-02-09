@@ -12,37 +12,51 @@ import java.util.List;
 @RequestMapping("/experiences")
 public class ExperienceController {
 
-
     @Autowired
     private ExperienceService service;
 
+    // Endpoint to retrieve all experiences
     @GetMapping()
     public ResponseEntity<List<Experience>> getAllExperiences(){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.getAllExperiences());
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(service.getAllExperiences());
+
         return responseEntity;
     }
 
+    // Endpoint to retrieve a specific experience by its ID
     @GetMapping("/{id}")
     public ResponseEntity<Experience> getExperienceById(@PathVariable Integer id){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.getExperienceById(id));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(service.getExperienceById(id));
+
         return responseEntity;
     }
 
+    // Endpoint to update an existing experience
     @PutMapping()
     public ResponseEntity<Experience> updateExperience(@RequestBody FormGetExperience formGetExperience){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.updateExperience(formGetExperience));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(service.updateExperience(formGetExperience));
+
         return responseEntity;
     }
 
+    // Endpoint to insert a new experience
     @PostMapping()
     public  ResponseEntity<Experience> insertExperience(@RequestBody FormGetExperience formGetExperience){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.insertExperience(formGetExperience));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(service.insertExperience(formGetExperience));
+
         return  responseEntity;
     }
 
+    // Endpoint to delete an existing experience
     @DeleteMapping()
     public ResponseEntity<Experience> deleteExperience(@RequestBody Experience experience){
-        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK).body(service.deleteExperience(experience));
+        ResponseEntity responseEntity = ResponseEntity.status(HttpStatus.OK)
+                .body(service.deleteExperience(experience));
+
         return responseEntity;
     }
 }

@@ -16,17 +16,21 @@ public class ExperienceService {
     @Autowired
     private ResumeStudentRepository resumeStudentRepository;
 
-
+    // Method to get all experiences from the database
     public List<Experience> getAllExperiences(){
         List<Experience>  experiences = experienceRepository.findAll();
+
         return experiences;
     }
 
+    // Method to get an experience by its ID
     public Experience getExperienceById(int id){
         Experience experience = experienceRepository.findById(id).get();
-        return  experience;
+
+        return experience;
     }
 
+    // Method to insert a new experience
     public Experience insertExperience(FormGetExperience formGetExperience){
         ResumeStudent resumeStudent = resumeStudentRepository.getById(formGetExperience.getResume_student_id());
         Experience experience = new Experience();
@@ -36,9 +40,11 @@ public class ExperienceService {
         experience.setCompanyName(formGetExperience.getCompanyName());
         experience.setJobDescription(formGetExperience.getJobDescription());
         experience.setResume(resumeStudent);
-        return  experienceRepository.save(experience);
+
+        return experienceRepository.save(experience);
     }
 
+    // Method to update an existing experience
     public Experience updateExperience (FormGetExperience formGetExperience){
         ResumeStudent resumeStudent = resumeStudentRepository.getById(formGetExperience.getResume_student_id());
         Experience experience = new Experience();
@@ -49,12 +55,15 @@ public class ExperienceService {
         experience.setCompanyName(formGetExperience.getCompanyName());
         experience.setJobDescription(formGetExperience.getJobDescription());
         experience.setResume(resumeStudent);
+
         return experienceRepository.save(experience);
     }
 
+    // Method to delete an experience
     public Experience deleteExperience(Experience experience){
         Experience oldExperience = experience;
         experienceRepository.delete(experience);
+
         return oldExperience;
     }
 }

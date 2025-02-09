@@ -16,7 +16,6 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Experience {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -36,9 +35,8 @@ public class Experience {
     @Column( name = "job_description", columnDefinition = "varchar(1500)")
     private String jobDescription;
 
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "resume_student_id", nullable = false)
+    @ManyToOne  // Many experiences can belong to one student resume
+    @JsonBackReference  // Prevent circular references during JSON serialization
+    @JoinColumn(name = "resume_student_id", nullable = false)   // Foreign key to the student's resume
     private ResumeStudent resume;
-
 }

@@ -17,7 +17,6 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Education {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -34,11 +33,11 @@ public class Education {
     @Column( name = "specialization", columnDefinition = "varchar(150)")
     private String specialization;
 
+    // Establishes many-to-one relationship with ResumeStudent
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference  // Prevents infinite recursion during JSON serialization
     @JoinColumn(name = "resume_student_id", nullable = false)
     private ResumeStudent resume;
-
 
     public Education(ResumeStudent resumeStudent) {
         this.resume = resumeStudent;

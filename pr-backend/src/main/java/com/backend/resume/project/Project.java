@@ -16,7 +16,6 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Project {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -30,9 +29,8 @@ public class Project {
     @Column( name = "description", columnDefinition = "varchar(1500)")
     private String description;
 
-    @ManyToOne
-    @JsonBackReference
+    @ManyToOne  // Specifies the relationship between Project and ResumeStudent (many projects to one resume)
+    @JsonBackReference  // Avoids circular reference during JSON serialization
     @JoinColumn(name = "resume_student_id", nullable = false)
-    private ResumeStudent resume;
-
+    private ResumeStudent resume;    // The associated ResumeStudent entity
 }
