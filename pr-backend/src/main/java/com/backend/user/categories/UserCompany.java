@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+// This class is a DTO (Data Transfer Object) used to hold the relationship between a User and a Company
 public class UserCompany {
-    private User user;
-    private Company company;
+    private User user;  // The User associated with the company
+    private Company company;    // The Company associated with the user
 }

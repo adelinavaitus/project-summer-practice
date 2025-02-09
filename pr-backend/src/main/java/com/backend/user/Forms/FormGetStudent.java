@@ -1,6 +1,5 @@
 package com.backend.user.Forms;
 
-import com.backend.faculty.Faculty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+// This class is a DTO (Data Transfer Object) used for transferring student data between layers or between client and server
 public class FormGetStudent {
     public int id;
     public String email;
@@ -16,5 +16,4 @@ public class FormGetStudent {
     public String phoneNo;
     private String group;
     private String facultyName;
-
 }
