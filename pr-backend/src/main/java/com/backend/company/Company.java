@@ -1,6 +1,5 @@
 package com.backend.company;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Company {
-
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column( name = "name", columnDefinition = "varchar(100)", nullable = false)
@@ -32,6 +29,4 @@ public class Company {
         this.description = description;
         this.size = size;
     }
-
-
 }
