@@ -31,8 +31,6 @@ import PendingRequest from './components/supervisorAccount/PendingRequestCompone
 import HistoryRequest from './components/supervisorAccount/HistoryRequestComponent';
 import ProfileSupervisor from './components/supervisorAccount/ProfileSupervisorComponent';
 class App extends Component {
-
-
   render() {
     return (
       <Router>
@@ -72,6 +70,5 @@ class App extends Component {
     );
   }
 }
-
 
 export default App;
