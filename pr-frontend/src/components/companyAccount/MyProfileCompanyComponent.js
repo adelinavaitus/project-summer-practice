@@ -5,111 +5,120 @@ import { Col, Card, CardBody, CardHeader, CardTitle, Row, Label, Button, Modal, 
 import { Control, LocalForm } from 'react-redux-form';
 import axios from 'axios';
 
-
 class MyProfileCompany extends Component {
     constructor(props) {
         super(props);
+
+        // Initialize the component's state to manage company data and modal visibility
         this.state = {
-            company: {},
-            isModalNameOpen: false,
-            isModalDescriptionOpen: false,
-            isModalSizeOpen: false,
+            company: {},    // Object to hold the company details
+            isModalNameOpen: false, // Boolean to manage the visibility of the "Edit Name" modal
+            isModalDescriptionOpen: false,   // Boolean for the "Edit Description" modal
+            isModalSizeOpen: false, // Boolean for the "Edit Company Size" modal
         }
+        // Bind modal toggling methods to the component
         this.toggleModalCompanyName = this.toggleModalCompanyName.bind(this);
         this.toggleModalDescription = this.toggleModalDescription.bind(this);
         this.toggleModalSize = this.toggleModalSize.bind(this);
     }
 
-
+    // Toggle the visibility of the "Edit Name" modal
     toggleModalCompanyName() {
         this.setState({
             isModalNameOpen: !this.state.isModalNameOpen
         });
     }
 
+    // Toggle the visibility of the "Edit Description" modal
     toggleModalDescription() {
         this.setState({
             isModalDescriptionOpen: !this.state.isModalDescriptionOpen
         });
     }
 
+    // Toggle the visibility of the "Edit Company Size" modal
     toggleModalSize() {
         this.setState({
             isModalSizeOpen: !this.state.isModalSizeOpen
         });
     }
 
+    // Fetch company data from the backend using the logged-in user's ID
     getCompanyById() {
         const url = `http://localhost:8080/companies/${this.props.userLogin.id}`;
         axios.get(url)
             .then(result => {
-                return result.data
+                return result.data  // Extract company data from the API response
             }).then(res => {
                 this.setState({
-                    company: res,
+                    company: res,   // Update the state with company data
                 })
             })
             .catch(err => {
-                console.log(err);
+                console.log(err);   // Log errors in case of a failed request
             })
     }
 
+    // Fetch the company data when the component mounts
     componentDidMount() {
         this.getCompanyById();
     }
 
-
+    // Handle updating the company name via the backend API
     handleName(values) {
-        var cname = values.cname;
+        var cname = values.cname;   // Extract the company name from form values
         const url = `http://localhost:8080/companies/${this.state.company.id}/name`;
-        axios.put(url, { cname })
+        axios.put(url, { cname })   // Send PUT request to update the name
             .then(response => {
-                console.log(response.data)
-                window.location.reload();
+                console.log(response.data)  // Log the response data
+                window.location.reload();   // Reload the page to reflect the changes
             })
             .catch(err => {
-                console.log(err);
+                console.log(err);   // Log any errors
             })
-        this.toggleModalCompanyName();
+        this.toggleModalCompanyName();  // Close the modal after submission
     }
 
+    // Handle updating the company description via the backend API
     handleDescription(values) {
-        var description = values.cdescription;
+        var description = values.cdescription;  // Extract the description from form values
         const url = `http://localhost:8080/companies/${this.state.company.id}/description`;
-        axios.put(url, { description })
+        axios.put(url, { description }) // Send PUT request to update the description
             .then(response => {
-                console.log(response.data)
-                window.location.reload();
+                console.log(response.data)  // Log the response data
+                window.location.reload();   // Reload the page to reflect the changes
             })
             .catch(err => {
-                console.log(err);
+                console.log(err);   // Log any errors
             })
-        this.toggleModalDescription();
+        this.toggleModalDescription();  // Close the modal after submission
     }
 
+    // Handle updating the company size via the backend API
     handleCompanySize(values) {
-        var csize = values.csize;
+        var csize = values.csize;   // Extract the company size from form values
         const url = `http://localhost:8080/companies/${this.state.company.id}/size`;
-        axios.put(url, { csize })
+        axios.put(url, { csize })   // Send PUT request to update the company size
             .then(response => {
-                console.log(response.data)
-                window.location.reload();
+                console.log(response.data)  // Log the response data
+                window.location.reload();   // Reload the page to reflect the changes
             })
             .catch(err => {
-                console.log(err);
+                console.log(err);   // Log any errors
             })
-        this.toggleModalSize();
+        this.toggleModalSize(); // Close the modal after submission
     }
 
 
     render() {
-
+        // Redirect to the login page if the user is not logged in or does not have the "ROLE_COMPANY" role
         if (!this.props.loggedIn || this.props.userLogin.roles !== 'ROLE_COMPANY') {
             return (
                 <Redirect to="/login" />
             );
         }
 
+        // Render the company profile page
         return (
             <div className='container'>
                 <Card className='text-center principalCard' body outline>
@@ -119,7 +128,7 @@ class MyProfileCompany extends Component {
                                 <CardTitle tag="h4">Profilul companiei</CardTitle>
                             </CardHeader>
                             <CardBody className='text-left' >
-                                {/* ---------------------name -------------------------------------- */}
+                                {/* Display company name with an option to edit */}
                                 <Row className='row-myprofile' onClick={this.toggleModalCompanyName}>
                                     <Col md={4}>
                                         <div className="text-right">
@@ -134,6 +143,7 @@ class MyProfileCompany extends Component {
                                     </Col>
                                 </Row>
                                 <hr />
+                                {/* Display email address (non-editable) */}
                                 <Row className='row-myprofile-blocked'>
                                     <Col md={4}>
                                         <div className="text-right">
@@ -148,7 +158,7 @@ class MyProfileCompany extends Component {
                                     </Col>
                                 </Row>
                                 <hr />
-                                {/* ---------------------description -------------------------------------- */}
+                                {/* Display company description with an option to edit */}
                                 <Row className='row-myprofile' onClick={this.toggleModalDescription}>
                                     <Col md={4}>
                                         <div className="text-right">
@@ -163,7 +173,7 @@ class MyProfileCompany extends Component {
                                     </Col>
                                 </Row>
                                 <hr />
-                                {/* ---------------------description -------------------------------------- */}
+                                {/* Display company size with an option to edit */}
                                 <Row className='row-myprofile' onClick={this.toggleModalSize}>
                                     <Col md={4}>
                                         <div className="text-right">
@@ -181,7 +191,7 @@ class MyProfileCompany extends Component {
                         </Col>
                     </div>
                 </Card>
-
+                {/* Modal for editing company name */}
                 <Modal isOpen={this.state.isModalNameOpen}  >
                     <ModalHeader toggle={this.toggleModalCompanyName}>Modificare nume companie: </ModalHeader>
                     <LocalForm onSubmit={(values) => this.handleName(values)}>
@@ -204,7 +214,7 @@ class MyProfileCompany extends Component {
                         </ModalFooter>
                     </LocalForm>
                 </Modal>
-
+                {/* Modal for editing company description */}
                 <Modal isOpen={this.state.isModalDescriptionOpen}  >
                     <ModalHeader toggle={this.toggleModalDescription}>Modificare descriere: </ModalHeader>
                     <LocalForm onSubmit={(values) => this.handleDescription(values)}>
@@ -227,7 +237,7 @@ class MyProfileCompany extends Component {
                         </ModalFooter>
                     </LocalForm>
                 </Modal>
-
+                {/* Modal for editing company size */}
                 <Modal isOpen={this.state.isModalSizeOpen}  >
                     <ModalHeader toggle={this.toggleModalSize}>Modificare dimensiune companie: </ModalHeader>
                     <LocalForm onSubmit={(values) => this.handleCompanySize(values)}>
@@ -264,11 +274,12 @@ class MyProfileCompany extends Component {
     }
 
 }
-
+// Map Redux state to component props
 const mapStateToProps = (state) => {
-    const loggedIn = state.receivedUser.isLoggedIn;
-    const userLogin = state.receivedUser.userLogin;
+    const loggedIn = state.receivedUser.isLoggedIn;  // Check if the user is logged in
+    const userLogin = state.receivedUser.userLogin; // Retrieve user login details
     return { loggedIn, userLogin };
 };
 
+// Connect the component to Redux
 export default connect(mapStateToProps)(MyProfileCompany);
