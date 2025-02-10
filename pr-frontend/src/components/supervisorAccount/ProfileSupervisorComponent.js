@@ -4,71 +4,73 @@ import { Redirect } from 'react-router-dom';
 import { Col, Card, CardBody, CardHeader, CardTitle, Row, Label, CardFooter, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Control, LocalForm } from 'react-redux-form';
 import axios from 'axios';
-import { toHaveFocus } from '@testing-library/jest-dom/dist/matchers';
-
 
 class ProfileSupervisor extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userInfo: {},
-            faculty: {},
-            isModalFirstNameOpen: false,
-            isModalLastNameOpen: false
+            userInfo: {}, // Store supervisor's data
+            faculty: {}, // Store supervisor's faculty data
+            isModalFirstNameOpen: false, // Track if the modal for changing first name is open
+            isModalLastNameOpen: false // Track if the modal for changing last name is op
         }
 
+        // Bind the methods to toggle modals
         this.toggleModalFirstName = this.toggleModalFirstName.bind(this);
         this.toggleModalLastName = this.toggleModalLastName.bind(this);
     }
 
+    // Toggle modal for first name change
     toggleModalFirstName() {
         this.setState({
             isModalFirstNameOpen: !this.state.isModalFirstNameOpen
         });
     }
 
+    // Toggle modal for last name change
     toggleModalLastName() {
         this.setState({
             isModalLastNameOpen: !this.state.isModalLastNameOpen
         });
     }
 
+    // Handle first name change and update it on the backend
     handleFirstName(values) {
         var fname = values.firstname;
         const url = `http://localhost:8080/supervisors/${this.state.userInfo.id}/firstname`;
         axios.put(url, { fname })
             .then(response => {
-                console.log(response.data)
-                window.location.reload();
+                window.location.reload();   // Reload the page to reflect changes
             })
             .catch(err => {
                 console.log(err);
             })
-        this.toggleModalFirstName();
+        this.toggleModalFirstName();    // Close the modal after saving
     }
 
+    // Handle last name change and update it on the backend
     handleLastName(values) {
         var lname = values.lastname;
         const url = `http://localhost:8080/supervisors/${this.state.userInfo.id}/lastname`;
         axios.put(url, { lname })
             .then(response => {
-                console.log(response.data)
-                window.location.reload();
+                window.location.reload();   // Reload the page to reflect changes
             })
             .catch(err => {
                 console.log(err);
             })
-        this.toggleModalLastName();
+        this.toggleModalLastName(); // Close the modal after saving
     }
 
+    // Fetch the supervisor's information using their ID
     getSupervisorById() {
         axios.get(`http://localhost:8080/supervisors/${this.props.userLogin.id}`)
             .then(result => {
-                return result.data
+                return result.data  // Get the response data
             }).then(result => {
                 this.setState({
-                    userInfo: result,
-                    faculty: result.faculty
+                    userInfo: result,   // Update user information state
+                    faculty: result.faculty  // Update faculty information state
                 })
             })
             .catch(err => {
@@ -76,16 +78,19 @@ class ProfileSupervisor extends Component {
             })
     }
 
+    // Get supervisor data when the component is mounted
     componentDidMount() {
         this.getSupervisorById();
     }
 
     render() {
+        // Redirect user to login page if not logged in or not a supervisor
         if (!this.props.loggedIn || this.props.userLogin.roles !== 'ROLE_SUPERVISOR') {
             return (
                 <Redirect to="/login" />
             );
         }
+
         return (
             <div className='container'>
                 <Card className='text-center principalCard' body outline>
@@ -160,7 +165,7 @@ class ProfileSupervisor extends Component {
                     </div>
                 </Card>
 
-
+                {/* Modal for updating the first name */}
                 <Modal isOpen={this.state.isModalFirstNameOpen}  >
                     <ModalHeader toggle={this.toggleModalFirstName}>Modificare prenume: </ModalHeader>
                     <LocalForm onSubmit={(values) => this.handleFirstName(values)}>
@@ -183,6 +188,8 @@ class ProfileSupervisor extends Component {
                         </ModalFooter>
                     </LocalForm>
                 </Modal>
+
+                {/* Modal for updating the last name */}
                 <Modal isOpen={this.state.isModalLastNameOpen}  >
                     <ModalHeader toggle={this.toggleModalLastName}>Modificare nume familie: </ModalHeader>
                     <LocalForm onSubmit={(values) => this.handleLastName(values)}>
@@ -210,12 +217,13 @@ class ProfileSupervisor extends Component {
     }
 }
 
+// Map state to props for Redux
 const mapStateToProps = (state) => {
-    const loggedIn = state.receivedUser.isLoggedIn;
-    const userLogin = state.receivedUser.userLogin;
-    return { loggedIn, userLogin };
+    const loggedIn = state.receivedUser.isLoggedIn; // Checks if user is logged in
+    const userLogin = state.receivedUser.userLogin; // Gets the logged-in user's details
+    return { loggedIn, userLogin }; 
 };
 
-
+// Connects the component to the Redux store
 export default connect(mapStateToProps)(ProfileSupervisor);
 

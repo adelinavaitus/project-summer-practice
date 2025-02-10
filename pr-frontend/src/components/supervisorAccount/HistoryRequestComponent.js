@@ -14,6 +14,7 @@ class HistoryRequest extends Component {
         }
     }
 
+    // Fetch the supervisor's data and then fetch the students based on the supervisor's faculty
     getStudents() {
         axios.get(`http://localhost:8080/supervisors/${this.props.userLogin.id}`)
             .then(result => {
@@ -31,7 +32,6 @@ class HistoryRequest extends Component {
                         this.setState({
                             students: result,
                         })
-
                     })
                     .catch(err => {
                         console.log(err);
@@ -42,11 +42,13 @@ class HistoryRequest extends Component {
             })
     }
 
+    // Fetch students when component is mounted
     componentDidMount() {
         this.getStudents();
     }
 
     render() {
+        // Redirect user to login page if not logged in or not a supervisor
         if (!this.props.loggedIn || this.props.userLogin.roles !== 'ROLE_SUPERVISOR') {
             return (
                 <Redirect to="/login" />
@@ -60,6 +62,7 @@ class HistoryRequest extends Component {
                     </CardHeader>
                     <CardBody>
                         {
+                            // Display student table if any student's document is not null and has status
                             this.state.students.filter(res => ((res.document === null || res.document.status === null))).length < this.state.students.map(res => (res)).length
                                 ? <div>
                                     <table className='table'>
@@ -73,6 +76,7 @@ class HistoryRequest extends Component {
                                         </thead>
                                         <tbody>
                                             {
+                                                // Loop through the students and display document status
                                                 this.state.students.map(student => (
                                                     <React.Fragment>
                                                         {
@@ -115,13 +119,12 @@ class HistoryRequest extends Component {
     }
 }
 
-
-
+// Map state to props for Redux
 const mapStateToProps = (state) => {
-    const loggedIn = state.receivedUser.isLoggedIn;
-    const userLogin = state.receivedUser.userLogin;
+    const loggedIn = state.receivedUser.isLoggedIn; // Checks if user is logged in
+    const userLogin = state.receivedUser.userLogin; // Gets the logged-in user's details
     return { loggedIn, userLogin };
 };
 
+// Connects the component to the Redux store
 export default connect(mapStateToProps)(HistoryRequest);
-
