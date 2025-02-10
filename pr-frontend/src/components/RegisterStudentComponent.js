@@ -5,12 +5,22 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchFaculties, postFormRegisterStudent, ReloadPage } from '../redux/ActionCreators';
 
+// Validator to check if a value exists and is not empty
 const required = (val) => val && val.length;
+
+// Validator to check if a value has a minimum length
 const minLength = (len) => (val) => !(val) || (val.length >= len);
+
+// Validator to check if a value is a valid email address
 const validEmail = (val) => !(val) || /^[A-Z0-9._%=-]+@[A-Z0-9.-]+[A-Z]{2,4}$/i.test(val);
+
+// Validator to check if a value has a maximum length
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
+
+// Validator to check if a value contains only numeric characters
 const isNum = (val) => /^\d+$/.test(val);
 
+// Validator to check if a value contains at least one lowercase character
 function isLower(val) {
     if (val && val.length >= 6) {
         if (val === val.toLowerCase()) {
@@ -20,6 +30,7 @@ function isLower(val) {
 
 }
 
+// Validator to check if a value contains at least one uppercase character
 function isUpper(val) {
     if (val && val.length >= 6) {
         if (val === val.toUpperCase()) {
@@ -28,6 +39,7 @@ function isUpper(val) {
     } else return true
 }
 
+// Validator to check if a value contains at least one number
 function containsNumber(val) {
     if (val && val.length >= 6) {
         if (isLower(val) === true && isUpper(val) === true)
@@ -36,31 +48,31 @@ function containsNumber(val) {
     } else return true;
 }
 
+// Validator to check if a value contains only letters
 function onlyLetters(str) {
     return /^[a-zA-Z]+$/.test(str);
-  }
-
+}
 
 class RegisterStudent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            validPass: true
-        }
+            validPass: true // State to track if the password and confirmation match
+        };
+
+        // Bind methods to the component instance
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
 
-
-
+        // Check if the page was reloaded, then trigger the ReloadPage action
         if (window.performance) {
             if (performance.navigation.type == 1) {
                 this.props.ReloadPage();
             }
         }
-
     }
 
-
+    // Handler to check if password and confirmation password match
     handleChange(values) {
         if (values.password && values.password !== "" && values.conpassword && values.conpassword !== "")
             if (values.password === values.conpassword)
@@ -69,11 +81,12 @@ class RegisterStudent extends Component {
                 this.setState({ validPass: false })
     }
 
-
+    // Lifecycle method to fetch the list of faculties on component mount
     componentDidMount() {
         this.props.fetchFaculties();
     }
 
+    // Handler to submit the form with student registration data
     handleSubmit(values) {
         const data = {
             email: values.email,
@@ -84,12 +97,12 @@ class RegisterStudent extends Component {
             group: values.groupF,
             facultyId: values.faculty,
         }
-        
+
         this.props.postFormRegisterStudent(data);
     }
 
     render() {
-
+        // Redirect to home page if the user is already logged in
         if (this.props.loggedIn) {
             return (
                 <Redirect to="/home" />
@@ -100,6 +113,7 @@ class RegisterStudent extends Component {
             <div className='container card-register'>
                 <Card className='text-center' body outline>
                     <div className="row align-items-start">
+                        {/* Form Section */}
                         <Col sm={12} lg={8}>
                             <CardBody>
                                 <CardHeader>
@@ -108,13 +122,14 @@ class RegisterStudent extends Component {
                                 <CardBody>
                                     <LocalForm model="feedback" onSubmit={(values) => this.handleSubmit(values)}
                                         onChange={(values) => this.handleChange(values)}>
+                                        {/* Last Name Field */}
                                         <Row className='form-group'>
                                             <Label htmlFor='lastname' md={4}>Nume<span className='req'>*</span></Label>
                                             <Col md={8}>
                                                 <Control.text model=".lastname" id="lastname" name='lastname'
                                                     placeholder='Nume'
                                                     className='form-control'
-                                                    validators={{ required, minLength: minLength(3) , onlyLetters}} />
+                                                    validators={{ required, minLength: minLength(3), onlyLetters }} />
                                                 <Errors
                                                     className='text-danger'
                                                     model=".lastname"
@@ -127,7 +142,7 @@ class RegisterStudent extends Component {
                                                 />
                                             </Col>
                                         </Row>
-
+                                        {/* First Name Field */}
                                         <Row className='form-group'>
                                             <Label htmlFor='firstname' md={4}>Prenume<span className='req'>*</span></Label>
                                             <Col md={8}>
@@ -146,9 +161,9 @@ class RegisterStudent extends Component {
                                                     }}
                                                 />
                                             </Col>
-
                                         </Row>
 
+                                        {/* Email Field */}
                                         <Row className='form-group'>
                                             <Label htmlFor='email' md={4}>Email<span className='req'>*</span></Label>
                                             <Col md={8}>
@@ -170,6 +185,7 @@ class RegisterStudent extends Component {
                                             </Col>
                                         </Row>
 
+                                        {/* Phone Number Field */}
                                         <Row className='form-group'>
                                             <Label htmlFor='telephoneno' md={4}>Numar de telefon<span className='req'>*</span></Label>
                                             <Col md={8}>
@@ -193,6 +209,7 @@ class RegisterStudent extends Component {
                                             </Col>
                                         </Row>
 
+                                        {/* Faculty Field */}
                                         <Row className='form-group'>
                                             <Label htmlFor='faculty' md={4}>Facultate<span className='req'>*</span></Label>
                                             <Col md={8}>
@@ -219,6 +236,8 @@ class RegisterStudent extends Component {
                                             </Col>
                                         </Row>
 
+
+                                        {/* Class Field */}
                                         <Row className='form-group'>
                                             <Label htmlFor='groupF' md={4}>Grupa si seria<span className='req'>*</span></Label>
                                             <Col md={8}>
@@ -238,6 +257,7 @@ class RegisterStudent extends Component {
                                             </Col>
                                         </Row>
 
+                                        {/* Password Field */}
                                         <Row className='form-group'>
                                             <Label htmlFor='password' md={4}>Parola<span className='req'>*</span></Label>
                                             <Col md={8}>
@@ -261,6 +281,7 @@ class RegisterStudent extends Component {
                                             </Col>
                                         </Row>
 
+                                        {/* Confirmation Password Field */}
                                         <Row className='form-group'>
                                             <Label htmlFor='conpassword' md={4}>Confirma Parola<span className='req'>*</span></Label>
                                             <Col md={8}>
@@ -305,6 +326,7 @@ class RegisterStudent extends Component {
                                             </Col>
                                         </Row>
 
+                                        {/* Login link */}
                                         <Row>
                                             <Col md={{ size: 8, offset: 4 }}>
                                                 <h6>Ai deja cont? &nbsp;
@@ -327,6 +349,7 @@ class RegisterStudent extends Component {
     }
 }
 
+// Maps Redux state to component props
 const mapStateToProps = (state) => {
     const loggedIn = state.receivedUser.isLoggedIn;
     const faculties = state.receivedUser.faculties;
@@ -334,4 +357,5 @@ const mapStateToProps = (state) => {
     return { loggedIn, faculties, err_register };
 }
 
+// Connect to Redux store
 export default connect(mapStateToProps, { fetchFaculties, postFormRegisterStudent, ReloadPage })(RegisterStudent);

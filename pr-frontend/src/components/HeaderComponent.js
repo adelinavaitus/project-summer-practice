@@ -8,27 +8,29 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isNavOpen: false
+            isNavOpen: false     // State to manage navbar toggle
         };
 
-        this.toggleNav = this.toggleNav.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
+        this.toggleNav = this.toggleNav.bind(this); // Bind toggleNav method
+        this.handleLogout = this.handleLogout.bind(this);   // Bind handleLogout method
     }
 
+    // Toggles the navigation bar open/close
     toggleNav() {
         this.setState({
             isNavOpen: !this.state.isNavOpen
         });
     }
 
+    // Handles user logout and clears token
     handleLogout = () => {
         localStorage.removeItem("token");
         this.props.logoutUser();
     }
 
-
     render() {
         let homeButton;
+        // Conditionally render the home button based on roles
         if (this.props.loggedIn && (this.props.userLogin.roles === "ROLE_STUDENT" || this.props.userLogin.roles === "ROLE_COMPANY")) {
             if (this.state.isNavOpen) {
                 homeButton = <NavLink className="nav-link menu-button" to="/home">Joburi</NavLink>;
@@ -37,6 +39,7 @@ class Header extends Component {
             }
         }
 
+        // Navbar for users who are not logged in
         if (!this.props.loggedIn) {
             return (
                 <React.Fragment>
@@ -51,6 +54,7 @@ class Header extends Component {
             );
         }
 
+        // Navbar for students
         if (this.props.userLogin.roles === "ROLE_STUDENT") {
             return (
                 <React.Fragment>
@@ -94,6 +98,8 @@ class Header extends Component {
                 </React.Fragment>
             );
         }
+
+        // Navbar for companies
         else if (this.props.userLogin.roles === "ROLE_COMPANY") {
             return (
                 <React.Fragment>
@@ -128,7 +134,7 @@ class Header extends Component {
             );
         }
 
-
+        // Navbar for admin
         else if (this.props.userLogin.roles === "ROLE_ADMIN") {
             return (
                 <React.Fragment>
@@ -163,8 +169,9 @@ class Header extends Component {
                     </Navbar>
                 </React.Fragment>
             );
-
         }
+
+        // Navbar for supervisors
         else if (this.props.userLogin.roles === "ROLE_SUPERVISOR") {
             return (
                 <React.Fragment>
@@ -204,11 +211,10 @@ class Header extends Component {
                 </React.Fragment>
             );
         }
-
     }
 }
 
-
+// Map state to props
 const mapStateToProps = (state) => {
     const loggedIn = state.receivedUser.isLoggedIn;
     const userLogin = state.receivedUser.userLogin;
@@ -216,4 +222,5 @@ const mapStateToProps = (state) => {
     return { loggedIn, userLogin };
 };
 
+// Connect to Redux store
 export default connect(mapStateToProps, { logoutUser })(Header);

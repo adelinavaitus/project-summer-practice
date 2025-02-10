@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, CardBody, CardText, CardHeader, CardImg, CardImgOverlay, Button } from 'reactstrap';
-import { Link , Redirect} from 'react-router-dom';
-import {connect} from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Register extends Component {
     constructor(props) {
@@ -9,12 +9,12 @@ class Register extends Component {
     }
 
     render() {
-
-        if(this.props.loggedIn){
-            return(
-              <Redirect to="home" />
+        // Redirect to home if the user is already logged in
+        if (this.props.loggedIn) {
+            return (
+                <Redirect to="home" />
             );
-          }
+        }
 
         return (
             <div className='container card-register'>
@@ -27,6 +27,7 @@ class Register extends Component {
                         </div>
                         <div className="row align-items-start">
                             <div className="col-12 col-md m-1 card-student">
+                                {/* Card for Student registration */}
                                 <CardImg src='../assets/student.png' alt="Student presentation image" className='image' />
                                 <div className='middle'>
                                     <Link to="/register/student">
@@ -38,6 +39,7 @@ class Register extends Component {
                             <div className="col-12 col-md-1 m-1">
                             </div>
                             <div className="col-12 col-md m-1 card-companie" >
+                                {/* Card for Company registration */}
                                 <CardImg src='../assets/company.png' alt="Student presentation image" className='image' />
                                 <div className='middle'>
                                     <Link to="/register/company">
@@ -52,7 +54,8 @@ class Register extends Component {
                     <CardBody>
                         <CardHeader>
                             <div className="col-12 col-md m-1">
-                                <h6>Ai deja cont? &nbsp; 
+                                {/* Link to login page if the user already has an account */}
+                                <h6>Ai deja cont? &nbsp;
                                     <Link className='login-link' to="/login">Login</Link>
                                 </h6>
                             </div>
@@ -63,13 +66,13 @@ class Register extends Component {
             </div>
         );
     }
-
 }
 
+// Maps Redux state to component props
 const mapStateToProps = (state) => {
-    const loggedIn = state.receivedUser.isLoggedIn;
-    return {loggedIn};
+    const loggedIn = state.receivedUser.isLoggedIn; // Tracks if the user is logged in
+    return { loggedIn };
 }
 
-export default connect (mapStateToProps)(Register);
-
+// Connect to Redux store
+export default connect(mapStateToProps)(Register);
