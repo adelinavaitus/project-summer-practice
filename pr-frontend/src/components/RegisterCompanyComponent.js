@@ -5,20 +5,25 @@ import { Link, Redirect } from 'react-router-dom';
 import { postFormRegisterCompany, ReloadPage } from '../redux/ActionCreators';
 import { connect } from "react-redux";
 
+// Validation for required fields
 const required = (val) => val && val.length;
+
+// Validation for minimum length
 const minLength = (len) => (val) => !(val) || (val.length >= len);
+
+// Validation for email format
 const validEmail = (val) => !(val) || /^[A-Z0-9._%=-]+@[A-Z0-9.-]+[A-Z]{2,4}$/i.test(val);
 
-
+// Checks if the password contains at least one lowercase letter
 function isLower(val) {
     if (val && val.length >= 6) {
         if (val === val.toLowerCase()) {
             return false;
         } else return true;
     } else return true
-
 }
 
+// Checks if the password contains at least one uppercase letter
 function isUpper(val) {
     if (val && val.length >= 6) {
         if (val === val.toUpperCase()) {
@@ -27,6 +32,7 @@ function isUpper(val) {
     } else return true
 }
 
+// Checks if the password contains at least one number
 function containsNumber(val) {
     if (val && val.length >= 6) {
         if (isLower(val) === true && isUpper(val) === true)
@@ -40,34 +46,35 @@ class RegisterCompany extends Component {
         super(props);
 
         this.state = {
-            validPass: true
+            validPass: true // State to manage password validation
         }
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);   // Bind the submit handler
+        this.handleChange = this.handleChange.bind(this);    // Bind the change handler
 
-
+        // Reload page if the user performs a refresh
         if (window.performance) {
             if (performance.navigation.type == 1) {
-              this.props.ReloadPage();
-            } 
-          }
-
+                this.props.ReloadPage();
+            }
+        }
     }
 
+    // Handles form submission
     handleSubmit(values) {
         this.props.postFormRegisterCompany(values);
     }
 
+    // Validates if passwords match
     handleChange(values) {
-        if(values.password && values.password !== "" && values.conpassword && values.conpassword !== "")
-        if (values.password === values.conpassword)
-            this.setState({ validPass: true })
-        else
-            this.setState({ validPass: false })
+        if (values.password && values.password !== "" && values.conpassword && values.conpassword !== "")
+            if (values.password === values.conpassword)
+                this.setState({ validPass: true })
+            else
+                this.setState({ validPass: false })
     }
 
     render() {
-
+        // Redirect if the user is already logged in
         if (this.props.loggedIn) {
             return (
                 <Redirect to="home" />
@@ -80,6 +87,7 @@ class RegisterCompany extends Component {
                     <div className="row align-items-start">
                         <Col sm={12} lg={8}>
                             <CardBody>
+                                {/* Title for the company registration */}
                                 <CardHeader>
                                     <CardTitle tag="h4">Cont nou companie</CardTitle>
                                 </CardHeader>
@@ -115,7 +123,7 @@ class RegisterCompany extends Component {
                                                 <Control.text model=".email" id="email" name="email"
                                                     placeholder="Email"
                                                     className='form-control'
-                                                    onChange={()=> this.props.ReloadPage()}
+                                                    onChange={() => this.props.ReloadPage()}
                                                     validators={{ required, validEmail }}
                                                 />
                                                 <Errors
@@ -207,7 +215,7 @@ class RegisterCompany extends Component {
                                                         required: 'Acest câmp este obligatoriu. '
                                                     }}
                                                 />
-                                            
+
                                             </Col>
                                         </Row>
                                         <Row>
@@ -217,12 +225,12 @@ class RegisterCompany extends Component {
                                                     !this.state.validPass
                                                         ? <div className='invalid-credentials'>Parolele trebuie sa fie identice.</div>
                                                         : <div></div>
-                                                        
+
                                                 }
                                                 {
-                                                    this.props.errRegister && this.props.errRegister.length>0
-                                                    ? <div className='invalid-credentials'>{this.props.errRegister}</div>
-                                                    :<div></div>
+                                                    this.props.errRegister && this.props.errRegister.length > 0
+                                                        ? <div className='invalid-credentials'>{this.props.errRegister}</div>
+                                                        : <div></div>
                                                 }
                                             </Col>
                                         </Row>
@@ -254,12 +262,13 @@ class RegisterCompany extends Component {
     }
 }
 
-
+// Maps Redux state to component props
 const mapStateToProps = (state) => {
-    const isRegisered = state.receivedUser.isRegistered;
-    const loggedIn = state.receivedUser.isLoggedIn;
-    const errRegister = state.receivedUser.err_register_comp;
+    const isRegisered = state.receivedUser.isRegistered;     // Tracks if the company is registered
+    const loggedIn = state.receivedUser.isLoggedIn;  // Tracks if the user is logged in
+    const errRegister = state.receivedUser.err_register_comp;    // Stores registration errors
     return { isRegisered, loggedIn, errRegister };
 };
 
+// Connect to Redux store
 export default connect(mapStateToProps, { postFormRegisterCompany, ReloadPage })(RegisterCompany);

@@ -10,15 +10,17 @@ class Supervisors extends Component {
     constructor(props) {
         super(props);
 
+        // Initialize the component's state
         this.state = {
             supervisors: [],
             option: '',
         }
 
+        // Bind the handleChange method to this component
         this.handleChange = this.handleChange.bind(this);
     }
 
-
+    // Fetch all supervisors from the backend
     getAllSupervisors() {
         axios.get(`http://localhost:8080/supervisors`)
             .then(result => {
@@ -34,17 +36,19 @@ class Supervisors extends Component {
             })
     }
 
-
+    // Fetch data when the component mounts
     componentDidMount() {
         this.getAllSupervisors();
     }
 
+    // Handle the change of sorting option
     handleChange(e) {
         this.setState({ option: e.target.value });
         console.log("option: " + this.state.option);
     }
 
     render() {
+        // Redirect to login if the user is not logged in or is not an admin
         if (!this.props.loggedIn || this.props.userLogin.roles !== 'ROLE_ADMIN') {
             return (
                 <Redirect to="/login" />
@@ -62,6 +66,7 @@ class Supervisors extends Component {
                         <Row className='select-row'>
                             <Col md={9}></Col>
                             <Col md={3}>
+                                {/* Dropdown for sorting supervisors */}
                                 <Control.select model=".faculty" name="faculty" className='form-control'
                                     value={this.state.option} onChange={this.handleChange}>
                                     <option value="" disabled selected>Sorteaza</option>
@@ -73,8 +78,8 @@ class Supervisors extends Component {
                         {
                             this.state.option === 'all' || this.state.option === ''
                                 ? <div>
+                                    {/* Display all supervisors */}
                                     {
-
                                         this.state.supervisors.map(res => (res)).length > 0
                                             ? <table class="table">
                                                 <thead>
@@ -97,6 +102,7 @@ class Supervisors extends Component {
                                 </div>
                                 : this.state.option === 'byFaculty'
                                     ? <div className='text-left'>
+                                        {/* Display supervisors grouped by faculty */}
                                         {
                                             this.props.faculties.map(res => (res)).length > 0
                                                 ? <div >
@@ -138,6 +144,7 @@ class Supervisors extends Component {
     }
 }
 
+// Map state from Redux to component props
 const mapStateToProps = (state) => {
     const loggedIn = state.receivedUser.isLoggedIn;
     const faculties = state.receivedUser.faculties;
@@ -145,4 +152,5 @@ const mapStateToProps = (state) => {
     return { loggedIn, faculties, userLogin };
 };
 
+// Connect the component to Redux
 export default connect(mapStateToProps, { fetchFaculties })(Supervisors);

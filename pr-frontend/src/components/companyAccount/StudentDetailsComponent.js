@@ -10,17 +10,17 @@ class StudentDetails extends Component {
         super(props);
 
         this.state = {
-            student: {},
-            resume: {},
-            educations: [],
-            experiences: [],
-            projects: []
+            student: {},    // Stores student details
+            resume: {}, // Stores resume details
+            educations: [], // List of educations
+            experiences: [],    // List of work experiences
+            projects: []    // List of projects
         }
-
     }
 
-
+    // Fetches student details and resume by student ID
     getStudentById() {
+        // Fetch resume details
         axios.get(`http://localhost:8080/resumes/student/${this.props.match.params.id}`)
             .then(result => {
                 return result.data
@@ -33,28 +33,31 @@ class StudentDetails extends Component {
                 })
             })
             .catch(err => {
-                console.log(err);
+                console.log(err);   // Logs any error encountered
             })
 
+        // Fetch student details
         axios.get(`http://localhost:8080/users/${this.props.match.params.id}`)
             .then(result => {
                 return result.data
             }).then(result => {
                 this.setState({
-                    student: result,
+                    student: result,    // Updates student state
                 })
 
             })
             .catch(err => {
-                console.log(err);
+                console.log(err);   // Logs any error encountered
             })
     }
 
+    // Fetches data when the component is mounted
     componentDidMount() {
         this.getStudentById();
     }
 
     render() {
+        // Redirects if user is not logged in or is not a company
         if (!this.props.loggedIn || this.props.userLogin.roles !== 'ROLE_COMPANY') {
             return (
                 <Redirect to="/login" />
@@ -63,6 +66,7 @@ class StudentDetails extends Component {
         return (
             <div className='container'>
                 <div className='div-button-back'>
+                    {/* Back button to navigate to the previous page */}
                     <Button className='back-button' onClick={(() => this.props.history.goBack())}><i class="fa fa-arrow-left" />	&nbsp;Inapoi</Button>
                 </div>
                 <Card className='text-center principalCard' body outline>
@@ -72,6 +76,7 @@ class StudentDetails extends Component {
                                 <CardTitle tag="h4">{this.state.student.firstName} {this.state.student.lastName}</CardTitle>
                             </CardHeader>
                             <CardBody className='text-left' >
+                                {/* Contact details */}
                                 <Row>
                                     <Col md={4}>
                                         <div className="text-right"><b>Date de contact: </b></div>
@@ -82,6 +87,7 @@ class StudentDetails extends Component {
                                     </Col>
                                 </Row>
                                 <hr />
+                                {/* Resume description */}
                                 {
                                     this.state.resume.description === null
                                         ? <div></div>
@@ -97,7 +103,7 @@ class StudentDetails extends Component {
                                             <hr />
                                         </div>
                                 }
-
+                                {/* Technical skills */}
                                 {
                                     this.state.resume.techSkills === null
                                         ? <div></div>
@@ -113,7 +119,7 @@ class StudentDetails extends Component {
                                             <hr />
                                         </div>
                                 }
-
+                                {/* Soft skills */}
                                 {
                                     this.state.resume.softSkills === null
                                         ? <div></div>
@@ -129,6 +135,7 @@ class StudentDetails extends Component {
                                             <hr />
                                         </div>
                                 }
+                                {/* Foreign languages */}
                                 {
                                     this.state.resume.foreignLanguages === null
                                         ? <div></div>
@@ -144,6 +151,7 @@ class StudentDetails extends Component {
                                             <hr />
                                         </div>
                                 }
+                                {/* Education history */}
                                 {
                                     this.state.educations.map(res => (res)).length === 0
                                         ? <div></div>
@@ -175,7 +183,7 @@ class StudentDetails extends Component {
                                         </div>
 
                                 }
-
+                                {/* Work experience */}
                                 {
                                     this.state.experiences.map(res => (res)).length === 0
                                         ? <div></div>
@@ -205,7 +213,7 @@ class StudentDetails extends Component {
                                             <hr />
                                         </div>
                                 }
-
+                                {/* Projects */}
                                 {
                                     this.state.projects.map(res => (res)).length === 0
                                         ? <div></div>
@@ -241,12 +249,12 @@ class StudentDetails extends Component {
     }
 }
 
-
+// Maps Redux state to component props
 const mapStateToProps = (state) => {
     const loggedIn = state.receivedUser.isLoggedIn;
     const userLogin = state.receivedUser.userLogin;
     return { loggedIn, userLogin };
 };
 
-
+// Connect the component to Redux
 export default connect(mapStateToProps)(StudentDetails);

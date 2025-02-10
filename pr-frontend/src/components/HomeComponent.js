@@ -10,6 +10,7 @@ class Home extends Component {
   }
 
   render() {
+    // Redirect based on the user's role
     if (!this.props.loggedIn) {
       return (
         <Redirect to="/login" />
@@ -18,6 +19,7 @@ class Home extends Component {
     return (
       <div className='container'>
         {
+          // Conditional redirects based on user role
           this.props.userLogin.roles === 'ROLE_COMPANY'
             ? <Redirect to="/jobs" />
             : this.props.userLogin.roles === 'ROLE_STUDENT'
@@ -33,10 +35,12 @@ class Home extends Component {
   }
 }
 
+// Maps Redux state to component props
 const mapStateToProps = (state) => {
-  const loggedIn = state.receivedUser.isLoggedIn;
-  const userLogin = state.receivedUser.userLogin;
+  const loggedIn = state.receivedUser.isLoggedIn; // Checks if user is logged in
+  const userLogin = state.receivedUser.userLogin; // Gets the logged-in user's details
   return { loggedIn, userLogin };
 }
 
+// Connects the component to the Redux store
 export default connect(mapStateToProps,)(Home);

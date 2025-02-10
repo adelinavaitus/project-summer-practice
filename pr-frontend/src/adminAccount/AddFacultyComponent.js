@@ -6,11 +6,16 @@ import { Card, CardFooter, CardHeader, CardBody, Col, Row, CardTitle, Label, But
 import { Control, Form, Errors, LocalForm, } from 'react-redux-form';
 import { fetchFaculties, postFormRegisterSupervisor } from '../redux/ActionCreators';
 
+// Validator to check if a value is present
 const required = (val) => val && val.length;
-const validEmail = (val) => !(val) || /^[A-Z0-9._%=-]+@[A-Z0-9.-]+[A-Z]{2,4}$/i.test(val);
-const minLength = (len) => (val) => !(val) || (val.length >= len);
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
 
+// Validator to check if the email is valid
+const validEmail = (val) => !(val) || /^[A-Z0-9._%=-]+@[A-Z0-9.-]+[A-Z]{2,4}$/i.test(val);
+
+// Validator to check the minimum length of a string
+const minLength = (len) => (val) => !(val) || (val.length >= len);
+
+// Validator to allow only letters
 function onlyLetters(str) {
     return /^[a-zA-Z]+$/.test(str);
 }
@@ -20,6 +25,7 @@ class AddFaculty extends Component {
         super(props);
     }
 
+    // Handle submission of the faculty form
     handleSubmitFaculty(values) {
         const data = {
             id: -1,
@@ -36,6 +42,7 @@ class AddFaculty extends Component {
             })
     }
 
+    // Handle submission of the supervisor form
     handleSubmitSupervisor(values) {
         const data = {
             email: values.email,
@@ -47,12 +54,13 @@ class AddFaculty extends Component {
         this.props.postFormRegisterSupervisor(data);
     }
 
+    // Fetch the list of faculties when the component mounts
     componentDidMount() {
         this.props.fetchFaculties();
     }
 
     render() {
-
+        // Redirect to login if the user is not logged in or does not have admin privileges
         if (!this.props.loggedIn || this.props.userLogin.roles !== 'ROLE_ADMIN') {
             return (
                 <Redirect to="/login" />
@@ -68,6 +76,7 @@ class AddFaculty extends Component {
                             </CardHeader>
                             <LocalForm model="feedback" onSubmit={(values) => this.handleSubmitFaculty(values)}>
                                 <CardBody>
+                                    {/* Faculty name input */}
                                     <Row className='form-group text-right'>
                                         <Label htmlFor='facultyname' md={4}>Nume facultate:  <span className='req'>*</span></Label>
                                         <Col md={8}>
@@ -88,6 +97,7 @@ class AddFaculty extends Component {
                                     </Row>
                                 </CardBody>
                                 <CardFooter>
+                                    {/* Add faculty button */}
                                     <Button block type="submit" className='submit-button' >
                                         Adauga
                                     </Button>
@@ -102,6 +112,7 @@ class AddFaculty extends Component {
                             </CardHeader>
                             <LocalForm model="feedback" onSubmit={(values) => this.handleSubmitSupervisor(values)}>
                                 <CardBody>
+                                    {/* First name input */}
                                     <Row className='form-group text-right'>
                                         <Label htmlFor='fname' md={4}>Nume:  <span className='req'>*</span></Label>
                                         <Col md={8}>
@@ -122,6 +133,7 @@ class AddFaculty extends Component {
                                             />
                                         </Col>
                                     </Row>
+                                    {/* Last name input */}
                                     <Row className='form-group text-right'>
                                         <Label htmlFor='lname' md={4}>Prenume:  <span className='req'>*</span></Label>
                                         <Col md={8}>
@@ -142,8 +154,7 @@ class AddFaculty extends Component {
                                             />
                                         </Col>
                                     </Row>
-
-
+                                    {/* Email input */}
                                     <Row className='form-group text-right'>
                                         <Label htmlFor='email' md={4}>Email<span className='req'>*</span></Label>
                                         <Col md={8}>
@@ -164,7 +175,7 @@ class AddFaculty extends Component {
                                             />
                                         </Col>
                                     </Row>
-
+                                    {/* Faculty selection */}
                                     <Row className='form-group  text-right'>
                                         <Label htmlFor='faculty' md={4}>Facultate<span className='req'>*</span></Label>
                                         <Col md={8}>
@@ -190,7 +201,7 @@ class AddFaculty extends Component {
                                             />
                                         </Col>
                                     </Row>
-
+                                    {/* Password input */}
                                     <Row className='form-group text-right'>
                                         <Label htmlFor='password' md={4}>Parola<span className='req'>*</span></Label>
                                         <Col md={8}>
@@ -211,6 +222,7 @@ class AddFaculty extends Component {
                                     </Row>
                                 </CardBody>
                                 <CardFooter>
+                                    {/* Add supervisor button */}
                                     <Button block type="submit" className='submit-button' >
                                         Adauga
                                     </Button>
@@ -224,6 +236,7 @@ class AddFaculty extends Component {
     }
 }
 
+// Map Redux state to component props
 const mapStateToProps = (state) => {
     const loggedIn = state.receivedUser.isLoggedIn;
     const faculties = state.receivedUser.faculties;
@@ -231,4 +244,5 @@ const mapStateToProps = (state) => {
     return { loggedIn, faculties, userLogin };
 };
 
+// Connect the component to Redux
 export default connect(mapStateToProps, { fetchFaculties, postFormRegisterSupervisor })(AddFaculty);

@@ -13,30 +13,34 @@ class ContactUs extends Component {
                     <div className="row align-items-start">
                         <Col sm={12} lg={8}>
                             <CardBody>
+                                {/* Card Header for the title */}
                                 <CardHeader>
                                     <CardTitle tag='h4'>Contact</CardTitle>
                                 </CardHeader>
                                 <CardBody className='text-left'>
+                                    {/* Address Information */}
                                     <CardText>
                                         Adresa : Str Florilor, nr. 65
                                         Bucuresti, SECTOR 3
                                         Romania
                                     </CardText>
+                                    {/* Phone Number Section */}
                                     <CardText>
                                         Telefon:
                                         <ul className="list-unstyled">
                                             <i className="fa fa-phone"></i>: +852 1234 5678<br />
                                             <i className="fa fa-phone"></i>: +40781436543<br />
-                                          
                                         </ul>
                                     </CardText>
+                                    {/* Email Section */}
                                     <CardText>
-                                    <i className="fa fa-envelope"></i>: <a href="mailto:summer_practice@univ.net">summer_practice@univ.net</a>
+                                        <i className="fa fa-envelope"></i>: <a href="mailto:summer_practice@univ.net">summer_practice@univ.net</a>
                                     </CardText>
                                 </CardBody>
                             </CardBody>
                         </Col>
                         <Col sm={12} lg={4} className="d-none d-lg-block ">
+                            {/* Image for Contact Us Section */}
                             <CardImg src='../assets/contactus.png' alt="Contact us page presentation image" className='image' />
                         </Col>
                     </div>

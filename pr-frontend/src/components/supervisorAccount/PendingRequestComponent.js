@@ -7,28 +7,29 @@ import storage from '../../firebase/firebaseConfig';
 import axios from 'axios';
 import { Card, CardHeader, CardTitle, CardBody, Row, Col, Button, Modal, ModalBody, ModalHeader, ModalFooter, Label } from 'reactstrap';
 
-
-
 class PendingRequest extends Component {
     constructor(props) {
         super(props)
 
+        // Initializing the component state
         this.state = {
-            students: [],
-            supervisor: {},
-            faculty: {},
-            isModalApprovedOpen: false,
-            isModalRejectedOpen: false,
-            currentStudent: {},
-            file: {},
-            percent: 0,
-            downloadUrl: '',
+            students: [],              // List of students
+            supervisor: {},            // Supervisor information
+            faculty: {},               // Faculty information
+            isModalApprovedOpen: false, // Modal state for approved request
+            isModalRejectedOpen: false, // Modal state for rejected request
+            currentStudent: {},        // Information of the student whose request is being handled
+            file: {},                  // File data for upload
+            percent: 0,                // Upload progress percentage
+            downloadUrl: '',           // URL for the uploaded file
         }
 
+        // Binding modal toggle functions to the current context
         this.toggleModalApproved = this.toggleModalApproved.bind(this);
         this.toggleModalRejected = this.toggleModalRejected.bind(this);
     }
 
+    // Function to toggle the approved modal and set the current student
     toggleModalApproved(student) {
         this.setState({
             isModalApprovedOpen: !this.state.isModalApprovedOpen,
@@ -36,6 +37,7 @@ class PendingRequest extends Component {
         })
     }
 
+    // Function to toggle the rejected modal and set the current student
     toggleModalRejected(student) {
         this.setState({
             isModalRejectedOpen: !this.state.isModalRejectedOpen,
@@ -43,9 +45,12 @@ class PendingRequest extends Component {
         })
     }
 
+    // Handling the file upload for an approved request
     handleUploadApproved(values) {
         const storageRef = ref(storage, `/files/${this.state.file.name}`);
         const uploadTask = uploadBytesResumable(storageRef, this.state.file);
+
+        // Tracking upload progress
         uploadTask.on(
             "state_changed",
             (snapshot) => {
@@ -59,11 +64,13 @@ class PendingRequest extends Component {
             },
             (err) => console.log(err),
             () => {
+                // After successful upload, get the download URL
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                     this.setState({
                         downloadUrl: url
                     })
 
+                    // Prepare data for the API request
                     const data = {
                         id: this.state.currentStudent.document.id,
                         name: '',
@@ -73,6 +80,7 @@ class PendingRequest extends Component {
                         feedback: values.feedback
                     }
 
+                    // Sending the approved document data
                     const urlpost = `http://localhost:8080/documents/approved`;
                     axios.put(urlpost, data)
                         .then(response => {
@@ -87,8 +95,9 @@ class PendingRequest extends Component {
         );
     }
 
-
+    // Handling the file upload for a rejected request
     handleUploadRejected(values) {
+        // Prepare data for the API request
         const data = {
             id: this.state.currentStudent.document.id,
             name: '',
@@ -98,6 +107,7 @@ class PendingRequest extends Component {
             feedback: values.feedback
         }
 
+        // Sending the rejected document data
         const urlpost = `http://localhost:8080/documents/rejected`;
         axios.put(urlpost, data)
             .then(response => {
@@ -107,15 +117,16 @@ class PendingRequest extends Component {
             .catch(err => {
                 console.log(err);
             })
-
     }
 
+    // Function to handle file input change
     handleChange(event) {
         this.setState({
             file: event.target.files[0]
         });
     }
 
+    // Function to fetch students assigned to the current supervisor
     getStudents() {
         axios.get(`http://localhost:8080/supervisors/${this.props.userLogin.id}`)
             .then(result => {
@@ -126,6 +137,7 @@ class PendingRequest extends Component {
                     faculty: result.faculty
                 })
 
+                // Fetch students from the same faculty
                 axios.get(`http://localhost:8080/students/faculty/${this.state.faculty.id}`)
                     .then(result => {
                         return result.data
@@ -141,20 +153,21 @@ class PendingRequest extends Component {
             .catch(err => {
                 console.log(err);
             })
-
     }
 
-
+    // Fetch students on component mount
     componentDidMount() {
         this.getStudents();
     }
 
     render() {
+        // Redirect to login if the user is not logged in or does not have supervisor role
         if (!this.props.loggedIn || this.props.userLogin.roles !== 'ROLE_SUPERVISOR') {
             return (
                 <Redirect to="/login" />
             );
         }
+
         return (
             <div className='container'>
                 <Card className='text-center principalCard' body outline>
@@ -162,6 +175,7 @@ class PendingRequest extends Component {
                         <CardTitle tag="h4">Cereri in asteptare</CardTitle>
                     </CardHeader>
                     <CardBody>
+                        {/* Check if there are students with pending requests */}
                         {
                             this.state.students.filter(res => ((res.document === null || res.document.status === null))).length < this.state.students.map(res => (res)).length
                                 ? <div>
@@ -175,6 +189,7 @@ class PendingRequest extends Component {
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {/* Map over the students list */}
                                             {
                                                 this.state.students.map(student => (
                                                     <React.Fragment>
@@ -189,6 +204,7 @@ class PendingRequest extends Component {
                                                                                 <td>{student.group}</td>
                                                                                 <td><a href={student.document.downloadUrl}>{student.document.name}</a></td>
                                                                                 <td>
+                                                                                    {/* Show buttons to approve or reject */}
                                                                                     <Button onClick={() => this.toggleModalApproved(student)} className='approve-btn'>Aprobat</Button>
                                                                                     <Button onClick={() => this.toggleModalRejected(student)} className='reject-btn'>Respins</Button>
                                                                                 </td>
@@ -208,6 +224,8 @@ class PendingRequest extends Component {
                         }
                     </CardBody>
                 </Card>
+
+                {/* Modal for approving requests */}
                 <Modal size="lg" isOpen={this.state.isModalApprovedOpen}  >
                     <ModalHeader toggle={this.toggleModalApproved}>Feedback: </ModalHeader>
                     <LocalForm onSubmit={(values) => this.handleUploadApproved(values)}>
@@ -232,7 +250,6 @@ class PendingRequest extends Component {
                                     />
                                 </Col>
                             </Row>
-
                         </ModalBody>
                         <ModalFooter>
                             <Button onClick={this.toggleModalApproved} className="btn btn-primary mr-auto close-button">Renunță</Button>
@@ -242,6 +259,7 @@ class PendingRequest extends Component {
                     </LocalForm>
                 </Modal>
 
+                {/* Modal for rejecting requests */}
                 <Modal size="lg" isOpen={this.state.isModalRejectedOpen}  >
                     <ModalHeader toggle={this.toggleModalRejected}>Feedback: </ModalHeader>
                     <LocalForm onSubmit={(values) => this.handleUploadRejected(values)}>
@@ -258,7 +276,6 @@ class PendingRequest extends Component {
                                     />
                                 </Col>
                             </Row>
-
                         </ModalBody>
                         <ModalFooter>
                             <Button onClick={this.toggleModalRejected} className="btn btn-primary mr-auto close-button">Renunță</Button>
@@ -271,12 +288,12 @@ class PendingRequest extends Component {
     }
 }
 
-
+// Map state to props for Redux
 const mapStateToProps = (state) => {
-    const loggedIn = state.receivedUser.isLoggedIn;
-    const userLogin = state.receivedUser.userLogin;
+    const loggedIn = state.receivedUser.isLoggedIn; // Checks if user is logged in
+    const userLogin = state.receivedUser.userLogin; // Gets the logged-in user's details
     return { loggedIn, userLogin };
 };
 
-export default connect(mapStateToProps)(PendingRequest);
-
+// Connects the component to the Redux store
+export default connect(mapStateToProps)(HistoryRequest);
