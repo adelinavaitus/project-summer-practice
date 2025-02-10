@@ -9,32 +9,34 @@ class CVStudent extends Component {
     constructor(props) {
         super(props);
 
+        // Initial state for CV information and modal visibility
         this.state = {
-            resume: [],
-            id: parseInt(''),
-            description: '',
-            softskills: '',
-            techskills: '',
-            foreignLanguages: '',
-            passions: '',
-            educations: [],
-            experiences: [],
-            projects: [],
-            isModalDescriptionOpen: false,
-            isModalTechSkillsOpen: false,
-            isModalSoftSkillsOpen: false,
-            isModalForeignLanguagesOpen: false,
-            isModalEducationOpen: false,
-            currentEducation: {},
-            isModalAddNewEducationOpen: false,
-            isModalExperienceOpen: false,
-            currentExperience: {},
-            isModalAddNewExperienceOpen: false,
-            isModalProjectOpen: false,
-            currentProject: {},
-            isModalAddNewProjectOpen: false,
-
+            resume: [],  // Holds the resume data
+            id: parseInt(''),  // Resume ID
+            description: '',  // Description text
+            softskills: '',  // Soft skills text
+            techskills: '',  // Technical skills text
+            foreignLanguages: '',  // Foreign languages text
+            passions: '',  // Passions text
+            educations: [],  // Education history
+            experiences: [],  // Work experiences
+            projects: [],  // Projects history
+            isModalDescriptionOpen: false,  // Modal visibility for Description
+            isModalTechSkillsOpen: false,  // Modal visibility for TechSkills
+            isModalSoftSkillsOpen: false,  // Modal visibility for SoftSkills
+            isModalForeignLanguagesOpen: false,  // Modal visibility for Foreign Languages
+            isModalEducationOpen: false,  // Modal visibility for Education
+            currentEducation: {},  // Current education data
+            isModalAddNewEducationOpen: false,  // Modal for adding new education
+            isModalExperienceOpen: false,  // Modal visibility for Experience
+            currentExperience: {},  // Current experience data
+            isModalAddNewExperienceOpen: false,  // Modal for adding new experience
+            isModalProjectOpen: false,  // Modal visibility for Project
+            currentProject: {},  // Current project data
+            isModalAddNewProjectOpen: false,  // Modal for adding new project
         }
+
+        // Binding modal toggle functions to `this`
         this.toggleModalDescription = this.toggleModalDescription.bind(this);
         this.toggleModalTechSkills = this.toggleModalTechSkills.bind(this);
         this.toggleModalSoftSkills = this.toggleModalSoftSkills.bind(this);
@@ -48,13 +50,14 @@ class CVStudent extends Component {
 
     }
 
-
+    // Fetch the student's resume based on user login
     getResumeByStudentId() {
         const url = `http://localhost:8080/resumes/student/${this.props.userLogin.id}`;
         axios.get(url)
             .then(result => {
-                return result.data
+                return result.data  // Get the data from the API
             }).then(res => {
+                // Set the state with resume information after fetching
                 this.setState({
                     resume: res,
                     description: res.description,
@@ -68,51 +71,58 @@ class CVStudent extends Component {
                 })
             })
             .catch(err => {
-                console.log(err);
+                console.log(err);  // Log any errors in fetching data
             })
     }
 
+    // Triggered when the component is mounted, fetches resume data
     componentDidMount() {
         this.getResumeByStudentId();
     }
 
+    // Toggle modal visibility for description editing
     toggleModalDescription() {
         this.setState({
             isModalDescriptionOpen: !this.state.isModalDescriptionOpen
         });
     }
 
+    // Toggle modal visibility for tech skills editing
     toggleModalTechSkills() {
         this.setState({
             isModalTechSkillsOpen: !this.state.isModalTechSkillsOpen
         });
     }
 
+    // Toggle modal visibility for soft skills editing
     toggleModalSoftSkills() {
         this.setState({
             isModalSoftSkillsOpen: !this.state.isModalSoftSkillsOpen
         });
     }
 
+    // Toggle modal visibility for foreign languages editing
     toggleModalForeignLanguages() {
         this.setState({
             isModalForeignLanguagesOpen: !this.state.isModalForeignLanguagesOpen
         });
     }
 
-
+    // Toggle modal visibility for adding new experience
     toggleModalAddNewEducation() {
         this.setState({
             isModalAddNewEducationOpen: !this.state.isModalAddNewEducationOpen
         });
     }
 
+    // Toggle modal visibility for adding new experience
     toggleModalAddNewExperience() {
         this.setState({
             isModalAddNewExperienceOpen: !this.state.isModalAddNewExperienceOpen
         });
     }
 
+    // Toggle modal visibility for adding new project
     toggleModalAddNewProject() {
         this.setState({
             isModalAddNewProjectOpen: !this.state.isModalAddNewProjectOpen
@@ -120,6 +130,7 @@ class CVStudent extends Component {
     }
 
 
+    // Toggle modal visibility for editing education
     toggleModalEducation(educationid) {
         if (educationid === -1) {
             this.setState({
@@ -127,6 +138,7 @@ class CVStudent extends Component {
                 currentEducation: ''
             });
         } else {
+            // Find the selected education by its ID
             const foundEducation = this.state.educations.find(education => education.id === educationid);
             this.setState({
                 isModalEducationOpen: !this.state.isModalEducationOpen,
@@ -135,6 +147,7 @@ class CVStudent extends Component {
         }
     }
 
+    // Toggle modal visibility for editing experience
     toggleModalExperience(experienceid) {
         if (experienceid === -1) {
             this.setState({
@@ -142,6 +155,7 @@ class CVStudent extends Component {
                 currentExperience: ''
             });
         } else {
+            // Find the selected experience by its ID
             const foundExperience = this.state.experiences.find(experience => experience.id === experienceid);
             this.setState({
                 isModalExperienceOpen: !this.state.isModalExperienceOpen,
@@ -150,6 +164,7 @@ class CVStudent extends Component {
         }
     }
 
+    // Toggle modal visibility for editing project
     toggleModalProject(projectid) {
         if (projectid === -1) {
             this.setState({
@@ -157,6 +172,7 @@ class CVStudent extends Component {
                 currentProject: ''
             });
         } else {
+            // Find the selected project by its ID
             const foundProject = this.state.projects.find(project => project.id === projectid);
             this.setState({
                 isModalProjectOpen: !this.state.isModalProjectOpen,
@@ -165,16 +181,15 @@ class CVStudent extends Component {
         }
     }
 
-
-
+    // Handle description update (post description change to server)
     handleDescription(values) {
         var description = values.mydescription
-        description = description.replace(/(?:\r\n|\r|\n)/g, " ");
+        description = description.replace(/(?:\r\n|\r|\n)/g, " ");  // Normalize newlines
         const url = `http://localhost:8080/resumes/${this.state.resume.id}/description`;
         axios.put(url, { description })
             .then(response => {
                 console.log(response.data)
-                window.location.reload();
+                window.location.reload();   // Reload page after updating
             })
             .catch(err => {
                 console.log(err);
@@ -182,6 +197,7 @@ class CVStudent extends Component {
         this.toggleModalDescription();
     }
 
+    // Handle tech skills update
     handleTechSkills(values) {
         var techskills = values.techskills
         techskills = techskills.replace(/(?:\r\n|\r|\n)/g, " ");
@@ -197,6 +213,7 @@ class CVStudent extends Component {
         this.toggleModalTechSkills();
     }
 
+    // Handle soft skills update
     handleSoftSkills(values) {
         var softSkills = values.softskills
         softSkills = softSkills.replace(/(?:\r\n|\r|\n)/g, " ");
@@ -212,6 +229,7 @@ class CVStudent extends Component {
         this.toggleModalSoftSkills();
     }
 
+    // Handle foreign languages update
     handleForeignLanguages(values) {
         var foreignLanguages = values.foreignLanguages
         foreignLanguages = foreignLanguages.replace(/(?:\r\n|\r|\n)/g, " ");
@@ -227,6 +245,7 @@ class CVStudent extends Component {
         this.toggleModalForeignLanguages();
     }
 
+    // Handle education update (edit existing education)
     handleEducation(values) {
         const data = {
             id: this.state.currentEducation.id,
@@ -249,10 +268,10 @@ class CVStudent extends Component {
         this.toggleModalEducation(-1);
     }
 
-
+    // Handle adding new education
     handleAddNewEducation(values) {
         const data = {
-            id: -1,
+            id: -1, // New education entry has an ID of -1
             yearStart: values.yearStart,
             yearStop: values.yearStop,
             title: values.title,
@@ -271,6 +290,7 @@ class CVStudent extends Component {
         this.toggleModalAddNewEducation();
     }
 
+    // Handle experience update
     handleExperience(values) {
         const data = {
             id: this.state.currentExperience.id,
@@ -294,6 +314,7 @@ class CVStudent extends Component {
         this.toggleModalExperience(-1);
     }
 
+    // Handle adding new work experience
     handleAddNewExperience(values) {
         const data = {
             id: -1,
@@ -316,7 +337,7 @@ class CVStudent extends Component {
         this.toggleModalAddNewExperience();
     }
 
-
+    // Handle project update
     handleProject(values) {
         const data = {
             id: this.state.currentProject.id,
@@ -338,6 +359,7 @@ class CVStudent extends Component {
         this.toggleModalProject(-1);
     }
 
+    // Handle adding new project
     handleAddNewProject(values) {
         const data = {
             id: -1,
@@ -359,13 +381,13 @@ class CVStudent extends Component {
     }
 
     render() {
+        // Check if the user is logged in and has the role of 'ROLE_STUDENT'. If not, redirect to login page.
         if (!this.props.loggedIn || this.props.userLogin.roles !== 'ROLE_STUDENT') {
             return (
                 <Redirect to="/login" />
             );
         }
         return (
-
             <div className='container'>
                 <Card className='text-center principalCard' body outline>
                     <div className="row align-items-start">
@@ -825,7 +847,6 @@ class CVStudent extends Component {
                     </LocalForm>
                 </Modal>
 
-
                 {/* ----------------------------------------modal for new experience-------------- ----------------------- */}
                 <Modal isOpen={this.state.isModalAddNewExperienceOpen}  >
                     <ModalHeader toggle={this.toggleModalAddNewExperience}>Adauga o noua experienta: </ModalHeader>
@@ -902,7 +923,6 @@ class CVStudent extends Component {
                     </LocalForm>
                 </Modal>
 
-
                 {/* ----------------------------------------modal for existing projects-------------- ----------------------- */}
                 <Modal isOpen={this.state.isModalProjectOpen}  >
                     <ModalHeader toggle={() => this.toggleModalProject(this.state.currentProject.id)}>Modificare proiect: </ModalHeader>
@@ -960,7 +980,6 @@ class CVStudent extends Component {
                     </LocalForm>
                 </Modal>
 
-
                 {/* ----------------------------------------modal for new projects-------------- ----------------------- */}
                 <Modal isOpen={this.state.isModalAddNewProjectOpen}  >
                     <ModalHeader toggle={this.toggleModalAddNewProject}>Adaugare proiect nou: </ModalHeader>
@@ -1017,13 +1036,13 @@ class CVStudent extends Component {
     }
 }
 
-
+// Maps Redux state to component props
 const mapStateToProps = (state) => {
-    const loggedIn = state.receivedUser.isLoggedIn;
-    const userLogin = state.receivedUser.userLogin;
+    const loggedIn = state.receivedUser.isLoggedIn; // Checks if user is logged in
+    const userLogin = state.receivedUser.userLogin; // Gets the logged-in user's details
     return { loggedIn, userLogin };
 };
 
-
+// Connects the component to the Redux store
 export default connect(mapStateToProps)(CVStudent);
 
