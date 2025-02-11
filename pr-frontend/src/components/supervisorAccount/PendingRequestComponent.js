@@ -296,4 +296,4 @@ const mapStateToProps = (state) => {
 };
 
 // Connects the component to the Redux store
-export default connect(mapStateToProps)(HistoryRequest);
+export default connect(mapStateToProps)(PendingRequest);
