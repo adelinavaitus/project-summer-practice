@@ -13,13 +13,13 @@ import RegisterStudent from './components/RegisterStudentComponent';
 import AboutUs from './components/AboutUsComponent';
 import RegisterCompany from './components/RegisterCompanyComponent';
 import Login from './components/LoginComponent';
-import JobPage from './components/studentAccount/JobsComponent';
+import JobPage from './components/studentAccount/JobListComponent';
 import JobDetails from './components/studentAccount/JobDetailsComponent';
 import MyApplications from './components/studentAccount/MyApplicationsComponent';
 import CVStudent from './components/studentAccount/CVStudentComponent';
 import MyProfile from './components/studentAccount/MyProfileComponent';
 import AddJobPage from './components/companyAccount/AddJobComponent';
-import MyProfileCompany  from './components/companyAccount/MyProfileCompanyComponent';
+import MyProfileCompany from './components/companyAccount/MyProfileCompanyComponent';
 import StudentDetails from './components/companyAccount/StudentDetailsComponent';
 import AddFaculty from './adminAccount/AddFacultyComponent';
 import Students from './adminAccount/StudentsComponent';
@@ -30,6 +30,7 @@ import UploadDoc from './components/studentAccount/UploadDocComponent';
 import PendingRequest from './components/supervisorAccount/PendingRequestComponent';
 import HistoryRequest from './components/supervisorAccount/HistoryRequestComponent';
 import ProfileSupervisor from './components/supervisorAccount/ProfileSupervisorComponent';
+
 class App extends Component {
   render() {
     return (
@@ -45,7 +46,7 @@ class App extends Component {
             <Route exact path="/aboutus"><AboutUs /></Route>
             <Route exact path="/contactus"><ContactUs /></Route>
             <Route exact path="/jobs"><JobPage /></Route>
-            <Route path="/jobs/:id" component={JobDetails}/> 
+            <Route path="/jobs/:id" component={JobDetails} />
             <Route exact path="/myapplications" component={MyApplications} />
             <Route exact path="/addcv" component={CVStudent} />
             <Route exact path="/myprofile" component={MyProfile} />
@@ -55,7 +56,7 @@ class App extends Component {
             <Route exact path="/companies" component={Companies} />
             <Route exact path="/supervisors" component={Supervisors} />
             <Route exact path="/students" component={Students} />
-            <Route path="/students/:id" component={StudentDetails}/> 
+            <Route path="/students/:id" component={StudentDetails} />
             <Route exact path="/notfound"><NotFound /></Route>
             <Route exact path="/info" component={Info} />
             <Route exact path="/uploaddoc" component={UploadDoc} />
